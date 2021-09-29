@@ -59,6 +59,55 @@ public:
 	{
 		return *(this->headptr);
 	}
+	void addStart(T val)
+	{
+		Node<T>* newnode = new Node<T>(val);
+		if (headptr == nullptr)
+		{
+			headptr = newnode;
+			tailptr = newnode;
+		}
+		else
+		{
+			newnode->setNextNode(headptr);
+			headptr = newnode;
+		}
+		numElements += 1;
+	}
+
+	T at(int i)
+	{
+		if (i == 0)
+		{
+			return (headptr->getValue());
+		}
+		Node<T>* temp = headptr;
+		int r = 0;
+		if (i > 0 && i < numElements)
+		{
+			while (r < i)
+			{
+				temp = &(temp->getNextNode());
+				r++;
+			}
+			return temp->getValue();
+		}
+		else if (i < 0 && i >= -numElements)
+		{
+			i = numElements + i;
+			while (r < i)
+			{
+				temp = &(temp->getNextNode());
+				r++;
+			}
+			return temp->getValue();
+		}
+		else
+		{
+			std::cerr << "Invalid Index" << std::endl;
+			return NULL;
+		}
+	}
 };
 
 int main() {
@@ -70,7 +119,9 @@ int main() {
 	list.addEnd(50);
 	list.addEnd(60);
 	list.addEnd(70);
-	std::cout << list.getHeadNode().getNextNode().getValue() << std::endl;
+	list.addStart(0);
+	std::cout << list.getHeadNode().getValue() << std::endl;
+	std::cout << list.at(-2) << std::endl;
 }
 
 
