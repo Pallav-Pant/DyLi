@@ -3,28 +3,31 @@
 
 
 template <class T>
-class Node
+struct Node
 {
+private:
 	T value;
-	Node* nextNode;
+	
 public:
-	Node(T val = NULL)
+	Node* nextNode;
+
+	Node(const T & val = NULL)
 	{
-		this->value = val;
+		value = val;
 	}
 
 	T getValue()
 	{
 		return value;
 	}
-	void setValue(T val)
+	void setValue(T & val)
 	{
-		value = val;
+		value = *val;
 	}
 
-	Node getNextNode()
+	Node* getNextNode()
 	{
-		return *nextNode;
+		return nextNode;
 	}
 	void setNextNode(Node* nex)
 	{
@@ -55,11 +58,8 @@ public:
 		}
 		numElements += 1;
 	}
-	Node<T> getHeadNode()
-	{
-		return *(this->headptr);
-	}
-	void addStart(T val)
+
+	void addStart(const T & val)
 	{
 		Node<T>* newnode = new Node<T>(val);
 		if (headptr == nullptr)
@@ -75,6 +75,42 @@ public:
 		numElements += 1;
 	}
 
+	
+	Node<T>* nodeat(int i)
+	{
+		if (i == 0)
+		{
+			return (headptr);
+		}
+		Node<T>* temp = headptr;
+		int r = 0;
+		if (i > 0 && i < numElements)
+		{
+			while (r < i)
+			{
+				temp = (temp->getNextNode());
+				r++;
+			}
+			return temp;
+		}
+		else if (i < 0 && i >= -numElements)
+		{
+			i = numElements + i;
+			while (r < i)
+			{
+				temp = (temp->getNextNode());
+				r++;
+			}
+			return temp;
+		}
+		else
+		{
+			std::cerr << "Invalid Index" << std::endl;
+			return NULL;
+		}
+	}
+
+
 	T at(int i)
 	{
 		if (i == 0)
@@ -87,7 +123,7 @@ public:
 		{
 			while (r < i)
 			{
-				temp = &(temp->getNextNode());
+				temp = (temp->getNextNode());
 				r++;
 			}
 			return temp->getValue();
@@ -97,7 +133,7 @@ public:
 			i = numElements + i;
 			while (r < i)
 			{
-				temp = &(temp->getNextNode());
+				temp = (temp->getNextNode());
 				r++;
 			}
 			return temp->getValue();
@@ -107,6 +143,28 @@ public:
 			std::cerr << "Invalid Index" << std::endl;
 			return NULL;
 		}
+	}
+	void removeStart()
+	{
+		if (headptr != nullptr)
+		{
+			Node<T> temp = *headptr;
+			delete headptr;
+			headptr = temp.getNextNode();
+			numElements -= 1;
+		}
+		else
+			std::cerr << "No value to remove" << std::endl;
+	}
+	void removeEnd()
+	{
+		if (tailptr != nullptr)
+		{
+			tailptr = (this->nodeat(-2));
+			delete tailptr->getNextNode();
+			tailptr->setNextNode(nullptr);
+		}
+		numElements -= 1;
 	}
 };
 
@@ -120,7 +178,10 @@ int main() {
 	list.addEnd(60);
 	list.addEnd(70);
 	list.addStart(0);
-	std::cout << list.getHeadNode().getValue() << std::endl;
+	std::cout << list.at(-2) << std::endl;
+	list.removeEnd();
+	list.removeStart();
+	std::cout << list.at(0) << std::endl;
 	std::cout << list.at(-2) << std::endl;
 }
 
