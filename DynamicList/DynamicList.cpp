@@ -166,6 +166,16 @@ public:
 		}
 		numElements -= 1;
 	}
+
+	~DynamicList()
+	{
+		int i = -1;
+		while (i >= -numElements)
+		{
+			delete this->nodeat(i);
+			i--;
+		}
+	}
 };
 
 int main() {
@@ -183,6 +193,7 @@ int main() {
 	list.removeStart();
 	std::cout << list.at(0) << std::endl;
 	std::cout << list.at(-2) << std::endl;
+
 }
 
 
