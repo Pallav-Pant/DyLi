@@ -59,7 +59,7 @@ public:
 		numElements += 1;
 	}
 
-	void addStart(const T& val)
+	void addStart(const T & val)
 	{
 		Node<T>* newnode = new Node<T>(val);
 		if (headptr == nullptr)
@@ -167,13 +167,33 @@ public:
 		numElements -= 1;
 	}
 
+	int length()
+	{
+		return numElements;
+	}
+
+	void removeat(int p)
+	{
+		this->nodeat(p - 1)->setNextNode(this->nodeat(p + 1));
+		delete this->nodeat(p);
+		numElements -= 1;
+	}
+
 	~DynamicList()
 	{
-		int i = -1;
-		while (i >= -numElements)
+		if (headptr != nullptr)
 		{
-			delete this->nodeat(i);
-			i--;
+			Node<T>* del = headptr;
+			Node<T>* temp = del->getNextNode();
+			int i = 1;
+			while (i < numElements)
+			{
+				delete del;
+				del = temp;
+				temp = temp->getNextNode();
+				i++;
+			}
+			delete tailptr;
 		}
 	}
 };
