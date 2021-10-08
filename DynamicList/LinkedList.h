@@ -181,6 +181,7 @@ public:
 
 	~DynamicList()
 	{
+<<<<<<< HEAD
 		Node<T>* del = headptr;
 		Node<T>* temp = del->getNextNode();
 		int i = 1;
@@ -190,6 +191,21 @@ public:
 			del = temp;
 			temp = temp->getNextNode();
 			i++;
+=======
+		if (headptr != nullptr)
+		{
+			Node<T>* del = headptr;
+			Node<T>* temp = del->getNextNode();
+			int i = 1;
+			while (i < numElements)
+			{
+				delete del;
+				del = temp;
+				temp = temp->getNextNode();
+				i++;
+			}
+			delete tailptr;
+>>>>>>> master
 		}
 		delete tailptr;
 	}
